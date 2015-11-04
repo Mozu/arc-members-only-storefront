@@ -1,6 +1,6 @@
 {
   "name": "arc-members-only-storefront",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Arc.js action to make your entire store accessible only to logged-in users.",
   "scripts": {
     "test": "grunt test"
