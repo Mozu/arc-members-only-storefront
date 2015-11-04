@@ -1,5 +1,5 @@
 # arc-members-only-storefront
-### version 0.1.0
+### version 0.1.1
 
 Arc.js action to make your entire store accessible only to logged-in users.
 
