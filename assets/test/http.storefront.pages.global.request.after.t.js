@@ -102,4 +102,95 @@ describe('http.storefront.pages.global.request.after implementing http.storefron
 
     Simulator.simulate(actionName, action, context, callback);
   });
+  describe('filters on a set of regexes given by the `excludePaths` config',
+  function() {
+    var excludes = [
+      '^\/$',
+      '^\/promo\\-\\d+\/?$'
+    ];
+    function tryPath(path, shouldRedirect) {
+      return function(done) {
+
+        var redirectCalled = false;
+        var callback = function(err) {
+          assert.ok(!err, "Callback was called with an error: " + err);
+          if (shouldRedirect) {
+            assert.ok(
+              redirectCalled,
+              'Redirect was never called for ' + path);
+          } else {
+            assert.ok(
+              !redirectCalled,
+              'Redirect was called for ' + path);
+          }
+          done();
+        };
+
+        var context = Simulator.context(actionName, callback);
+
+        context.apiContext = { userIsAnonymous: true };
+        context.configuration = {
+          excludePaths: excludes
+        };
+        context.request.query = {};
+        context.request.path = path;
+
+        context.response.redirect = function() {
+          redirectCalled = true;
+        }
+
+        Simulator.simulate(actionName, action, context, callback);
+      }
+    }
+    it('does not redirect homepage', tryPath('/',false));
+    it('does not redirect a promo page', tryPath('/promo-112',false));
+    it('redirects a product page', tryPath('/p/5678',true));
+    it('redirects a page that matches promo', tryPath('/p/promo-1',true));
+  });
+  describe('filters on a set of regexes given by the `includePaths` config',
+  function() {
+    var includes = [
+      '^\/$',
+      '^\/promo\\-\\d+\/?$'
+    ];
+    function tryPath(path, shouldRedirect) {
+      return function(done) {
+
+        var redirectCalled = false;
+        var callback = function(err) {
+          assert.ok(!err, "Callback was called with an error: " + err);
+          if (shouldRedirect) {
+            assert.ok(
+              redirectCalled,
+              'Redirect was never called for ' + path);
+          } else {
+            assert.ok(
+              !redirectCalled,
+              'Redirect was called for ' + path);
+          }
+          done();
+        };
+
+        var context = Simulator.context(actionName, callback);
+
+        context.apiContext = { userIsAnonymous: true };
+        context.configuration = {
+          includePaths: includes
+        };
+        context.request.query = {};
+        context.request.path = path;
+
+        context.response.redirect = function() {
+          redirectCalled = true;
+        }
+
+        Simulator.simulate(actionName, action, context, callback);
+      }
+    }
+    it('redirects homepage', tryPath('/',true));
+    it('redirects a promo page', tryPath('/promo-112',true));
+    it('does not redirect a product page', tryPath('/p/5678',false));
+    it('does not redirect a page matchin promo', tryPath('/p/promo-1',false));
+  })
+
 });

@@ -1,9 +1,9 @@
 # arc-members-only-storefront
 ### version 0.1.1
 
-Arc.js action to make your entire store accessible only to logged-in users.
+Arc.js action to make your entire store, or selected pages on your store, accessible only to logged-in users.
 
-### Usage
+### Installation
 Create a new application in your Mozu developer account. Note its application key.
 
 Clone this repository:
@@ -45,5 +45,9 @@ You'll need to enter your Mozu developer account password one more time for the 
 Now that your application is uploaded and synced with Developer Center, install it in a sandbox using the "Install" button on the application's Developer Center homepage. It should begin working immediately.
 
 You can disable it in Action Management in your Settings menu.
+
+### Usage and Configuration
+
+The `path-config.json` file contains a default set of regular expressions for URL paths to include and exclude from the authentication gateway. If the `includePaths` array is empty, then 
 
 ![members only](http://i.imgur.com/UTbfDwc.jpg)

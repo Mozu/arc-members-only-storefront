@@ -1,6 +1,6 @@
 module.exports = {
-  'enableOnInstall': {
+  'embedded.platform.applications.install': {
       actionName: 'embedded.platform.applications.install',
-      customFunction: require('./domains/platform.applications/enableOnInstall')
+      customFunction: require('./domains/platform.applications/embedded.platform.applications.install')
   }
 };

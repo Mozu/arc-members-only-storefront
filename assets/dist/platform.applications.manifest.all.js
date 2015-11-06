@@ -8,18 +8,29 @@
 var ActionInstaller = require('mozu-action-helpers/installers/actions');
 
 module.exports = function(context, callback) {
+  var defaultConfig = require('../../../../path-config.json');
   var installer = new ActionInstaller({ context: context.apiContext });
-  installer.enableActions(context).then(callback.bind(null, null), callback);
+  installer.enableActions(context, function(existing) {
+    if (existing && typeof existing === "object") {
+      for (var i in existing) {
+        if (existing.hasOwnProperty(i)) {
+          defaultConfig[i] = existing[i];
+        }
+      }
+    }
+    return defaultConfig;
+  }).then(callback.bind(null, null), callback);
 };
-},{"mozu-action-helpers/installers/actions":26}],2:[function(require,module,exports){
+
+},{"../../../../path-config.json":56,"mozu-action-helpers/installers/actions":26}],2:[function(require,module,exports){
 module.exports = {
-  'enableOnInstall': {
+  'embedded.platform.applications.install': {
       actionName: 'embedded.platform.applications.install',
-      customFunction: require('./domains/platform.applications/enableOnInstall')
+      customFunction: require('./domains/platform.applications/embedded.platform.applications.install')
   }
 };
 
-},{"./domains/platform.applications/enableOnInstall":1}],3:[function(require,module,exports){
+},{"./domains/platform.applications/embedded.platform.applications.install":1}],3:[function(require,module,exports){
 /**
  * Determine if an object is Buffer
  *
@@ -5954,5 +5965,13 @@ define(function() {
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(); }));
 
 }).call(this,require('_process'))
-},{"_process":undefined}]},{},[2])(2)
+},{"_process":undefined}],56:[function(require,module,exports){
+module.exports={
+  "includePaths": [],
+  "excludePaths": [
+    "^\/$"
+  ]
+}
+
+},{}]},{},[2])(2)
 });
